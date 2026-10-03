@@ -5,18 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pabal Ahmed | Systems Engineering & Security</title>
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: #111; color: #eee; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+        body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; margin: 0; padding: 0; background: #111; color: #eee; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; overflow: hidden; }
         h1 { font-size: 3rem; margin-bottom: 0.2rem; color: #fff; }
         h2 { font-size: 1.2rem; font-weight: 400; color: #aaa; margin-bottom: 2rem; }
-        .badge { background: #222; padding: 15px 25px; border-radius: 8px; border: 1px solid #333; display: inline-block; max-width: 500px;}
+        /* Clear liquid-glass: thin fill + light blur so the drawing shows through */
+        .badge {
+            position: relative;
+            z-index: 1;
+            padding: 15px 25px;
+            max-width: 500px;
+            display: inline-block;
+            border-radius: 18px;
+            color: #fff;
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow:
+                0 4px 24px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(3px) saturate(130%);
+            -webkit-backdrop-filter: blur(3px) saturate(130%);
+        }
         a { color: #58a6ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
 
+        /* Full-screen looping background: pinned to the viewport, painted behind text */
         .portrait-timelapse {
+            position: fixed;   /* stay locked to the viewport, even if the page scrolls */
+            inset: 0;          /* top/right/bottom/left: 0 — stretch to every edge */
             width: 100%;
-            max-width: 350px; 
-            border-radius: 12px;
-            margin-bottom: 2rem; 
+            height: 100%;
+            object-fit: cover; /* fill the box; crop overflow instead of stretching/squashing */
+            /* Zoom in, then pull the left-biased drawing toward the centered text */
+            object-position: 32% 40%;
+            transform: translateX(20px) scale(1.42);
+            z-index: -1;       /* stack behind in-flow content (headings, badge) */
+            opacity: 0.45;     /* stronger so the drawing is visible through the clear badge */
+            pointer-events: none; /* clicks pass through to the content in front */
         }
     </style>
 </head>
