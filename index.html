@@ -65,7 +65,7 @@
             position: absolute;
             left: 0;
             top: 0;
-            height: 70%;
+            height: 52%;
             z-index: 2;
             pointer-events: none;
             user-select: none;
@@ -207,10 +207,10 @@
     <script>
     (function () {
         // ---- knobs ----
-        var FACE_RX = 11;      // face "cloud" width  (stage units) where lines stop
-        var FACE_RY = 18;      // face "cloud" height (stage units)
-        var FACE_DEPTH = 0.8;  // face drift
-        var FACE_TILT = 5;     // degrees of 3D tilt
+        var FACE_RX = 8.2;     // face "cloud" width  (stage units) where lines stop
+        var FACE_RY = 13.5;    // face "cloud" height (stage units)
+        var FACE_DEPTH = 0;    // face drift (0 = face stays still)
+        var FACE_TILT = 0;     // degrees of 3D tilt (0 = none)
         var EASE = 0.08;       // smaller = floatier
         var FLOAT = 0.3;       // idle bob size (stage units)
 
@@ -290,8 +290,9 @@
         document.addEventListener('pointerleave', function () { tx = 0; ty = 0; });
 
         function place(it, t) {
-            var bobX = reduce ? 0 : Math.sin(t / 1700 + it.phase) * FLOAT * unit;
-            var bobY = reduce ? 0 : Math.cos(t / 1300 + it.phase) * FLOAT * unit;
+            var still = reduce || it.isFace;
+            var bobX = still ? 0 : Math.sin(t / 1700 + it.phase) * FLOAT * unit;
+            var bobY = still ? 0 : Math.cos(t / 1300 + it.phase) * FLOAT * unit;
             // nodes slide opposite to cursor, face drifts a little with it
             var sign = it.isFace ? 1 : -1;
             var dx = sign * mx * it.depth * unit + bobX;
