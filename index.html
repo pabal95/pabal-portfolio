@@ -4,166 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pabal Ahmed | Systems Engineering & Security</title>
-    <style>
-        * { box-sizing: border-box; }
-
-        html, body {
-            margin: 0;
-            height: 100%;
-            background: #d4d4d4;
-            font-family: system-ui, -apple-system, 'Inter', sans-serif;
-            overflow: hidden;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Living background: dot grid + soft glow that follows cursor */
-        .bg {
-            position: fixed;
-            inset: -40px;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(circle 280px at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.55), transparent 70%),
-                radial-gradient(rgba(0,0,0,0.13) 1px, transparent 1.6px);
-            background-size: 100% 100%, 28px 28px;
-        }
-
-        /* Stage = 16:9 box that scales to fit window. 1em = 1% of stage width. */
-        .stage {
-            --u: min(1vw, calc(100vh / 9 * 16 / 100));
-            position: relative;
-            z-index: 1;
-            width: calc(var(--u) * 100);
-            height: calc(var(--u) * 56.25);
-            font-size: var(--u);
-        }
-
-        #links {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            overflow: visible;
-        }
-        #links line {
-            stroke: #000;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-        }
-        #links line.dash { stroke-dasharray: 6 5; stroke-width: 1.2; }
-        #links circle { fill: #000; }
-
-        /* Face = the "cloud" in the middle */
-        .face {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 52%;
-            z-index: 2;
-            pointer-events: none;
-            user-select: none;
-            will-change: transform;
-            filter: drop-shadow(0 14px 22px rgba(0,0,0,0.22));
-        }
-
-        /* Node = positioned + parallax-moved by JS. Glass inside = hover stuff. */
-        .node {
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: 3;
-            will-change: transform;
-        }
-
-        .glass {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 9.5em;
-            height: 3.2em;
-            font-size: 1.3em;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            text-decoration: none;
-            color: #111;
-            border-radius: 1em;
-            background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.14));
-            border: 1px solid rgba(255,255,255,0.85);
-            box-shadow:
-                0 8px 26px rgba(0,0,0,0.18),
-                inset 0 1px 0 rgba(255,255,255,0.95),
-                inset 0 -1px 0 rgba(255,255,255,0.3);
-            backdrop-filter: blur(8px) saturate(160%);
-            -webkit-backdrop-filter: blur(8px) saturate(160%);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-        .glass small {
-            font-size: 0.55em;
-            font-weight: 400;
-            color: #444;
-            margin-top: 0.15em;
-        }
-        .glass:hover {
-            transform: scale(1.07);
-            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.28));
-            box-shadow: 0 12px 34px rgba(0,0,0,0.26), inset 0 1px 0 #fff;
-        }
-
-        /* Hub (like a switch) a bit bolder. Leaf (end device) a bit smaller. */
-        .hub .glass  { border-color: #fff; box-shadow: 0 8px 26px rgba(0,0,0,0.22), inset 0 1px 0 #fff, 0 0 0 1px rgba(0,0,0,0.15); }
-        .leaf .glass { font-size: 1.1em; width: 9em; height: 3em; }
-
-        /* Phone / narrow: face on top, boxes stacked, no lines, no parallax */
-        @media (max-width: 800px), (max-aspect-ratio: 1/1) {
-            html, body { overflow: auto; height: auto; min-height: 100%; }
-            body { display: block; padding: 1.5rem 1rem 3rem; }
-            .stage {
-                width: 100%;
-                height: auto;
-                font-size: 16px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-            #links { display: none; }
-            .face {
-                position: static;
-                transform: none !important;
-                height: auto;
-                width: min(70vw, 320px);
-            }
-            .node {
-                position: static;
-                transform: none !important;
-                width: 100%;
-                max-width: 360px;
-            }
-            .glass, .leaf .glass { width: 100%; height: 4.2rem; font-size: 1.1rem; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .glass { transition: none; }
-        }
-    </style>
+    <meta name="description" content="Pabal Ahmed. IT student at NJIT. Linux, networking and security projects.">
+    <link rel="stylesheet" href="style.css">
+    <script src="boot.js"></script>
 </head>
 <body>
+    <div id="loader" role="status" aria-live="polite">
+        <span class="shine">Connecting…</span>
+    </div>
+
     <div class="bg" id="bg"></div>
 
     <main class="stage" id="stage">
         <svg id="links" aria-hidden="true"></svg>
 
         <!-- Swap src to your real file name -->
-        <img class="face" id="face" src="assets/face.png" alt="Pabal Ahmed">
+        <img class="face" id="face" src="assets/face.png" alt="Portrait of Pabal Ahmed, half photo and half painting">
+
+        <h1 class="face-name" id="name">Pabal Ahmed</h1>
 
         <!--
           data-x / data-y : spot on stage (0-100 wide, 0-56 tall)
@@ -171,181 +29,39 @@
           data-parent     : who it links to ("face" or another node id)
           PLACEHOLDER LINKS: replace each href="#"
         -->
-        <div class="node"      id="about"    data-x="22" data-y="9"    data-depth="2.2" data-parent="face">
+        <div class="node"      id="about"    data-x="22" data-y="9"  data-depth="2.2" data-parent="face">
             <a class="glass" href="#">About Me</a>
         </div>
-        <div class="node"      id="resume"   data-x="11" data-y="28"   data-depth="3.0" data-parent="face">
+        <div class="node"      id="resume"   data-x="11" data-y="28" data-depth="3.0" data-parent="face">
             <a class="glass" href="#">Resume</a>
         </div>
-        <div class="node"      id="docs"     data-x="78" data-y="8"    data-depth="2.6" data-parent="face">
+        <div class="node"      id="docs"     data-x="78" data-y="8"  data-depth="2.6" data-parent="face">
             <a class="glass" href="#">Project Docs<small>GitBook</small></a>
         </div>
 
         <!-- Hub: Socials -> end devices -->
-        <div class="node hub"  id="socials"  data-x="86" data-y="28"   data-depth="3.2" data-parent="face">
+        <div class="node hub"  id="socials"  data-x="86" data-y="28" data-depth="3.2" data-parent="face">
             <a class="glass" href="#">Socials</a>
         </div>
-        <div class="node leaf" id="linkedin" data-x="92" data-y="46"   data-depth="4.2" data-parent="socials">
+        <div class="node leaf" id="linkedin" data-x="92" data-y="46" data-depth="4.2" data-parent="socials">
             <a class="glass" href="#">LinkedIn</a>
         </div>
-        <div class="node leaf" id="github"   data-x="75" data-y="48"   data-depth="4.0" data-parent="socials">
+        <div class="node leaf" id="github"   data-x="75" data-y="48" data-depth="4.0" data-parent="socials">
             <a class="glass" href="#">GitHub</a>
         </div>
 
         <!-- Hub: Projects -> end devices -->
-        <div class="node hub"  id="projects" data-x="30" data-y="45"   data-depth="3.0" data-parent="face">
+        <div class="node hub"  id="projects" data-x="30" data-y="45" data-depth="3.0" data-parent="face">
             <a class="glass" href="#">Projects</a>
         </div>
-        <div class="node leaf" id="laptops"  data-x="13" data-y="50"   data-depth="4.2" data-parent="projects">
+        <div class="node leaf" id="laptops"  data-x="13" data-y="50" data-depth="4.2" data-parent="projects">
             <a class="glass" href="https://laptops.pabal.dev">Laptop Inventory<small>PHP / MySQL</small></a>
         </div>
-        <div class="node leaf" id="homelab"  data-x="39" data-y="52"   data-depth="4.0" data-parent="projects">
+        <div class="node leaf" id="homelab"  data-x="39" data-y="52" data-depth="4.0" data-parent="projects">
             <a class="glass" href="#">Homelab<small>placeholder</small></a>
         </div>
     </main>
 
-    <script>
-    (function () {
-        // ---- knobs ----
-        var FACE_RX = 8.2;     // face "cloud" width  (stage units) where lines stop
-        var FACE_RY = 13.5;    // face "cloud" height (stage units)
-        var FACE_DEPTH = 0;    // face drift (0 = face stays still)
-        var FACE_TILT = 0;     // degrees of 3D tilt (0 = none)
-        var EASE = 0.08;       // smaller = floatier
-        var FLOAT = 0.3;       // idle bob size (stage units)
-
-        var stage = document.getElementById('stage');
-        var svg = document.getElementById('links');
-        var faceEl = document.getElementById('face');
-        var bg = document.getElementById('bg');
-        var mq = window.matchMedia('(max-width: 800px), (max-aspect-ratio: 1/1)');
-        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var NS = 'http://www.w3.org/2000/svg';
-
-        var face = { el: faceEl, x: 50, y: 28, depth: FACE_DEPTH, phase: 1.3, cx: 0, cy: 0, isFace: true };
-        var items = {};
-        var list = [];
-
-        Array.prototype.forEach.call(document.querySelectorAll('.node'), function (el) {
-            var it = {
-                el: el,
-                id: el.id,
-                x: +el.dataset.x,
-                y: +el.dataset.y,
-                depth: +el.dataset.depth,
-                parent: el.dataset.parent,
-                phase: Math.random() * 6.283,
-                cx: 0, cy: 0, hw: 0, hh: 0,
-                leaf: el.classList.contains('leaf')
-            };
-            items[it.id] = it;
-            list.push(it);
-        });
-        items.face = face;
-
-        // one line + one port dot per link
-        list.forEach(function (it) {
-            it.line = document.createElementNS(NS, 'line');
-            if (it.leaf) it.line.setAttribute('class', 'dash');
-            it.dot1 = document.createElementNS(NS, 'circle');
-            it.dot2 = document.createElementNS(NS, 'circle');
-            it.dot1.setAttribute('r', 3.5);
-            it.dot2.setAttribute('r', 3.5);
-            svg.appendChild(it.line);
-            svg.appendChild(it.dot1);
-            svg.appendChild(it.dot2);
-        });
-
-        var W = 0, H = 0, unit = 1;
-        function measure() {
-            W = stage.clientWidth;
-            H = stage.clientHeight;
-            unit = W / 100;
-            svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-            list.forEach(function (it) {
-                var g = it.el.firstElementChild;
-                it.hw = g.offsetWidth / 2;
-                it.hh = g.offsetHeight / 2;
-            });
-        }
-
-        // where a ray from center (cx,cy) toward (tx,ty) leaves a box / the face ellipse
-        function edgeRect(cx, cy, tx, ty, hw, hh) {
-            var dx = tx - cx, dy = ty - cy;
-            var t = Math.min(dx ? hw / Math.abs(dx) : Infinity, dy ? hh / Math.abs(dy) : Infinity);
-            return [cx + dx * t, cy + dy * t];
-        }
-        function edgeEllipse(cx, cy, tx, ty, rx, ry) {
-            var dx = tx - cx, dy = ty - cy;
-            var t = 1 / Math.sqrt((dx * dx) / (rx * rx) + (dy * dy) / (ry * ry));
-            return [cx + dx * t, cy + dy * t];
-        }
-
-        // mouse (-1..1), eased
-        var tx = 0, ty = 0, mx = 0, my = 0;
-        window.addEventListener('pointermove', function (e) {
-            tx = (e.clientX / window.innerWidth - 0.5) * 2;
-            ty = (e.clientY / window.innerHeight - 0.5) * 2;
-        });
-        document.addEventListener('pointerleave', function () { tx = 0; ty = 0; });
-
-        function place(it, t) {
-            var still = reduce || it.isFace;
-            var bobX = still ? 0 : Math.sin(t / 1700 + it.phase) * FLOAT * unit;
-            var bobY = still ? 0 : Math.cos(t / 1300 + it.phase) * FLOAT * unit;
-            // nodes slide opposite to cursor, face drifts a little with it
-            var sign = it.isFace ? 1 : -1;
-            var dx = sign * mx * it.depth * unit + bobX;
-            var dy = sign * my * it.depth * unit + bobY;
-            it.cx = it.x * unit + dx;
-            it.cy = it.y * unit + dy;
-            if (it.isFace) {
-                it.el.style.transform =
-                    'perspective(900px) translate(' + (it.cx) + 'px,' + (it.cy) + 'px) translate(-50%,-50%) ' +
-                    'rotateY(' + (mx * FACE_TILT) + 'deg) rotateX(' + (-my * FACE_TILT) + 'deg)';
-            } else {
-                it.el.style.transform =
-                    'translate(' + it.cx + 'px,' + it.cy + 'px) translate(-50%,-50%)';
-            }
-        }
-
-        function frame(t) {
-            requestAnimationFrame(frame);
-            if (mq.matches) return;
-
-            mx += (tx - mx) * EASE;
-            my += (ty - my) * EASE;
-
-            place(face, t);
-            list.forEach(function (it) { place(it, t); });
-
-            // lines follow the moving boxes
-            list.forEach(function (it) {
-                var p = items[it.parent];
-                var a, b;
-                if (p.isFace) {
-                    a = edgeEllipse(p.cx, p.cy, it.cx, it.cy, FACE_RX * unit, FACE_RY * unit);
-                } else {
-                    a = edgeRect(p.cx, p.cy, it.cx, it.cy, p.hw, p.hh);
-                }
-                b = edgeRect(it.cx, it.cy, p.cx, p.cy, it.hw, it.hh);
-                it.line.setAttribute('x1', a[0]); it.line.setAttribute('y1', a[1]);
-                it.line.setAttribute('x2', b[0]); it.line.setAttribute('y2', b[1]);
-                it.dot1.setAttribute('cx', a[0]); it.dot1.setAttribute('cy', a[1]);
-                it.dot2.setAttribute('cx', b[0]); it.dot2.setAttribute('cy', b[1]);
-            });
-
-            // background: glow follows cursor, dots drift
-            bg.style.setProperty('--mx', ((mx + 1) / 2 * 100) + '%');
-            bg.style.setProperty('--my', ((my + 1) / 2 * 100) + '%');
-            bg.style.backgroundPosition = '0 0, ' + (-mx * 14) + 'px ' + (-my * 14) + 'px';
-        }
-
-        window.addEventListener('resize', measure);
-        window.addEventListener('load', measure);
-        measure();
-        requestAnimationFrame(frame);
-    })();
-    </script>
+    <script src="app.js" defer></script>
 </body>
 </html>
