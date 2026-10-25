@@ -5,22 +5,6 @@
     var EASE = 0.08;       // smaller = floatier
     var FLOAT = 0.3;       // idle bob size (stage units)
     var INTRO_MS = 1700;   // shining text shows at least this long
-    var RESPIN_MS = 12000; // name re-spins this often
-
-    // Font roulette. LAST one is where it lands. System fonts only: no downloads.
-    var FONTS = [
-        { f: 'Impact, Haettenschweiler, sans-serif',                w: 400, s: 'normal' },
-        { f: 'Georgia, "Times New Roman", serif',                   w: 700, s: 'italic' },
-        { f: '"Courier New", Courier, monospace',                   w: 700, s: 'normal' },
-        { f: '"Brush Script MT", "Segoe Script", cursive',          w: 400, s: 'italic' },
-        { f: '"Trebuchet MS", sans-serif',                          w: 700, s: 'normal' },
-        { f: '"Palatino Linotype", Palatino, serif',                w: 700, s: 'normal' },
-        { f: '"Arial Black", Gadget, sans-serif',                   w: 900, s: 'normal' },
-        { f: '"Lucida Console", Monaco, monospace',                 w: 400, s: 'normal' },
-        { f: 'Copperplate, "Copperplate Gothic Light", fantasy',    w: 700, s: 'normal' },
-        { f: '"Segoe UI", system-ui, sans-serif',                   w: 700, s: 'normal' }
-    ];
-    var FINAL = FONTS.length - 1;
 
     var stage = document.getElementById('stage');
     var svg = document.getElementById('links');
@@ -144,33 +128,6 @@
         bg.style.backgroundPosition = '0 0, ' + (-mx * 14) + 'px ' + (-my * 14) + 'px';
     }
 
-    // ---- font roulette: spins fast, slows down, lands ----
-    var spinning = false, lastFont = -1;
-    function applyFont(i) {
-        var f = FONTS[i];
-        nameEl.style.fontFamily = f.f;
-        nameEl.style.fontWeight = f.w;
-        nameEl.style.fontStyle = f.s;
-        lastFont = i;
-    }
-    function spin() {
-        if (spinning || reduce || document.hidden) return;
-        spinning = true;
-        var delay = 60;
-        (function step() {
-            if (delay > 300) { applyFont(FINAL); spinning = false; return; }
-            var n;
-            do { n = Math.floor(Math.random() * FINAL); } while (n === lastFont);
-            applyFont(n);
-            delay *= 1.16;
-            setTimeout(step, delay);
-        })();
-    }
-    applyFont(FINAL);
-    nameEl.addEventListener('pointerenter', spin);
-    nameEl.addEventListener('click', spin);
-    setInterval(spin, RESPIN_MS);
-
     // ---- intro: shining text, then build the diagram piece by piece ----
     function show(it, ms) {
         setTimeout(function () {
@@ -189,7 +146,6 @@
         var t2 = list.filter(function (it) { return it.parent !== 'face'; });
         t1.forEach(function (it, i) { show(it, base + i * step); });
         t2.forEach(function (it, j) { show(it, base + t1.length * step + 250 + j * step); });
-        setTimeout(spin, base + list.length * step + 600);
     }
 
     var finished = false;
