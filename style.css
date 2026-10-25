@@ -4,6 +4,7 @@
     --ink: #e9ecf2;
     --ink-dim: #9aa3b2;
     --line: rgba(255, 255, 255, 0.6);
+    --face-opacity: 0.5; /* 1 = solid, 0 = gone */
 }
 
 * { box-sizing: border-box; }
@@ -102,25 +103,22 @@ body {
     z-index: 2;
     pointer-events: none;
     user-select: none;
+    opacity: var(--face-opacity);
     -webkit-mask-image: radial-gradient(ellipse 70% 58% at 50% 40%, #000 62%, transparent 100%);
     mask-image: radial-gradient(ellipse 70% 58% at 50% 40%, #000 62%, transparent 100%);
 }
 
-/* Name on the shirt, fixed font */
+/* Name: hidden from eyes, kept for screen readers and search */
 .face-name {
     position: absolute;
-    left: 50%;
-    top: 68.4%;
-    transform: translate(-50%, -50%);
-    z-index: 4;
-    margin: 0;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
     white-space: nowrap;
-    font-size: 2.2em;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: var(--ink);
-    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85);
-    user-select: none;
+    border: 0;
 }
 
 /* Node = moved by JS. Glass inside = hover. */
@@ -183,6 +181,7 @@ body {
 }
 .js .on,
 .js #links .on { opacity: 1; }
+.js .face.on { opacity: var(--face-opacity); }
 
 /* ---------- Phone / narrow: stacked, no lines, no parallax ---------- */
 @media (max-width: 800px), (max-aspect-ratio: 1/1) {
@@ -203,12 +202,6 @@ body {
         transform: none !important;
         height: auto;
         width: min(70vw, 320px);
-    }
-    .face-name {
-        position: static;
-        transform: none;
-        font-size: 2rem;
-        text-shadow: none;
     }
     .node {
         position: static;

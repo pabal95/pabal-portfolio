@@ -3,7 +3,8 @@
     var FACE_RX = 8.2;     // face "cloud" width  (stage units) where lines stop
     var FACE_RY = 13.5;    // face "cloud" height (stage units)
     var EASE = 0.08;       // smaller = floatier
-    var FLOAT = 0.3;       // idle bob size (stage units)
+    var FLOAT = 0.2;       // idle bob size (stage units)
+    var PARALLAX = 0.35;   // mouse drift strength (1 = old, 0 = none)
     var INTRO_MS = 1700;   // shining text shows at least this long
 
     var stage = document.getElementById('stage');
@@ -92,8 +93,8 @@
     function placeNode(it, t) {
         var bobX = reduce ? 0 : Math.sin(t / 1700 + it.phase) * FLOAT * unit;
         var bobY = reduce ? 0 : Math.cos(t / 1300 + it.phase) * FLOAT * unit;
-        it.cx = it.x * unit - mx * it.depth * unit + bobX;
-        it.cy = it.y * unit - my * it.depth * unit + bobY;
+        it.cx = it.x * unit - mx * it.depth * PARALLAX * unit + bobX;
+        it.cy = it.y * unit - my * it.depth * PARALLAX * unit + bobY;
         it.el.style.transform =
             'translate(' + it.cx + 'px,' + it.cy + 'px) translate(-50%,-50%)';
     }
