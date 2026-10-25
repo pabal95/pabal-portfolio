@@ -5,6 +5,7 @@
     --ink-dim: #9aa3b2;
     --line: rgba(255, 255, 255, 0.6);
     --face-opacity: 0.5; /* 1 = solid, 0 = gone */
+    --glow: 5px;         /* line glow size. 0px = no glow */
 }
 
 * { box-sizing: border-box; }
@@ -62,7 +63,7 @@ body {
     z-index: 0;
     pointer-events: none;
     background:
-        radial-gradient(circle 320px at var(--mx, 50%) var(--my, 50%), rgba(130, 155, 210, 0.16), transparent 70%),
+        radial-gradient(circle 150px at var(--mx, 50%) var(--my, 50%), rgba(130, 155, 210, 0.13), transparent 100%),
         radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1.6px);
     background-size: 100% 100%, 28px 28px;
 }
@@ -86,13 +87,34 @@ body {
     pointer-events: none;
     overflow: visible;
 }
-#links line {
+/* Link types, like cable types in Packet Tracer. Set per box with data-link. */
+#links path {
+    fill: none;
     stroke: var(--line);
     stroke-width: 1.2;
     stroke-linecap: round;
+    stroke-linejoin: round;
 }
-#links line.dash { stroke-dasharray: 6 5; stroke-width: 1; }
 #links circle { fill: #fff; }
+
+/* copper: plain thin white, no glow */
+#links .copper { stroke: var(--line); }
+
+/* fiber: solid amber, glowing */
+#links .fiber  { stroke: #ffb454; stroke-width: 1.6; filter: drop-shadow(0 0 var(--glow) rgba(255, 180, 84, 0.9)); }
+#links circle.fiber { fill: #ffb454; }
+
+/* serial: coral zigzag bolt, glowing */
+#links .serial { stroke: #ff6b6b; stroke-width: 1.6; filter: drop-shadow(0 0 var(--glow) rgba(255, 107, 107, 0.9)); }
+#links circle.serial { fill: #ff6b6b; }
+
+/* console: cyan dashes, soft glow */
+#links .console { stroke: #5ee0ff; stroke-width: 1.2; stroke-dasharray: 6 5; filter: drop-shadow(0 0 calc(var(--glow) * 0.7) rgba(94, 224, 255, 0.8)); }
+#links circle.console { fill: #5ee0ff; }
+
+/* dotted: lilac round dots, glowing */
+#links .dotted { stroke: #b69cff; stroke-width: 2.4; stroke-dasharray: 0.1 7; filter: drop-shadow(0 0 var(--glow) rgba(182, 156, 255, 0.9)); }
+#links circle.dotted { fill: #b69cff; }
 
 /* Face = the cloud. Still. Edges melt into the background. */
 .face {
@@ -174,7 +196,7 @@ body {
 .js .face,
 .js .face-name,
 .js .node,
-.js #links line,
+.js #links path,
 .js #links circle {
     opacity: 0;
     transition: opacity 0.7s ease;
@@ -215,5 +237,5 @@ body {
 @media (prefers-reduced-motion: reduce) {
     .glass { transition: none; }
     .shine { animation: none; -webkit-text-fill-color: #8b93a3; }
-    .js .face, .js .face-name, .js .node, .js #links line, .js #links circle { transition: none; }
+    .js .face, .js .face-name, .js .node, .js #links path, .js #links circle { transition: none; }
 }

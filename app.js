@@ -31,7 +31,8 @@
             parent: el.dataset.parent,
             phase: Math.random() * 6.283,
             cx: 0, cy: 0, hw: 0, hh: 0,
-            leaf: el.classList.contains('leaf')
+            leaf: el.classList.contains('leaf'),
+            link: el.dataset.link || 'copper'
         };
         items[it.id] = it;
         list.push(it);
@@ -39,10 +40,12 @@
 
     // one line + two port dots per link
     list.forEach(function (it) {
-        it.line = document.createElementNS(NS, 'line');
-        if (it.leaf) it.line.setAttribute('class', 'dash');
+        it.line = document.createElementNS(NS, 'path');
+        it.line.setAttribute('class', it.link);
         it.dot1 = document.createElementNS(NS, 'circle');
         it.dot2 = document.createElementNS(NS, 'circle');
+        it.dot1.setAttribute('class', it.link);
+        it.dot2.setAttribute('class', it.link);
         it.dot1.setAttribute('r', 3.5);
         it.dot2.setAttribute('r', 3.5);
         svg.appendChild(it.line);
@@ -73,6 +76,21 @@
         var dx = tx - cx, dy = ty - cy;
         var t = 1 / Math.sqrt((dx * dx) / (rx * rx) + (dy * dy) / (ry * ry));
         return [cx + dx * t, cy + dy * t];
+    }
+
+    // serial cable: straight line with a lightning-bolt kink in the middle
+    var ZIG_AMP = 1.1; // kink size (stage units)
+    function zigzag(a, b) {
+        var dx = b[0] - a[0], dy = b[1] - a[1];
+        var len = Math.sqrt(dx * dx + dy * dy) || 1;
+        var nx = -dy / len, ny = dx / len;
+        var amp = ZIG_AMP * unit;
+        var marks = [[0.30, 0], [0.38, 1], [0.46, -1], [0.54, 1], [0.62, -1], [0.70, 0]];
+        var d = 'M' + a[0] + ' ' + a[1];
+        marks.forEach(function (m) {
+            d += 'L' + (a[0] + dx * m[0] + nx * amp * m[1]) + ' ' + (a[1] + dy * m[0] + ny * amp * m[1]);
+        });
+        return d + 'L' + b[0] + ' ' + b[1];
     }
 
     // mouse (-1..1), eased
@@ -118,8 +136,9 @@
                 a = edgeRect(p.cx, p.cy, it.cx, it.cy, p.hw, p.hh);
             }
             b = edgeRect(it.cx, it.cy, p.cx, p.cy, it.hw, it.hh);
-            it.line.setAttribute('x1', a[0]); it.line.setAttribute('y1', a[1]);
-            it.line.setAttribute('x2', b[0]); it.line.setAttribute('y2', b[1]);
+            it.line.setAttribute('d', it.link === 'serial'
+                ? zigzag(a, b)
+                : 'M' + a[0] + ' ' + a[1] + 'L' + b[0] + ' ' + b[1]);
             it.dot1.setAttribute('cx', a[0]); it.dot1.setAttribute('cy', a[1]);
             it.dot2.setAttribute('cx', b[0]); it.dot2.setAttribute('cy', b[1]);
         });
