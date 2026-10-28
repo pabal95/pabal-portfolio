@@ -6,6 +6,7 @@
     <title>Pabal Ahmed | Systems Engineering & Security</title>
     <meta name="description" content="Pabal Ahmed. IT student at NJIT. Linux, networking and security projects.">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="panels.css">
     <script src="boot.js"></script>
 </head>
 <body>
@@ -28,13 +29,14 @@
           data-depth      : how far it drifts with the mouse (bigger = more)
           data-parent     : who it links to ("face" or another node id)
           data-link       : cable look: copper | fiber | serial | console | dotted
+          data-panel      : opens the zoom panel with that name (see panels at the bottom)
           PLACEHOLDER LINKS: replace each href="#"
         -->
         <div class="node"      id="about"    data-x="22" data-y="9"  data-depth="2.2" data-parent="face" data-link="copper">
-            <a class="glass" href="#">about me</a>
+            <a class="glass" href="#panel-about" data-panel="about" aria-haspopup="dialog">about me</a>
         </div>
         <div class="node"      id="resume"   data-x="11" data-y="28" data-depth="3.0" data-parent="face" data-link="copper">
-            <a class="glass" href="#">resume</a>
+            <a class="glass" href="#panel-resume" data-panel="resume" aria-haspopup="dialog">resume</a>
         </div>
         <div class="node"      id="docs"     data-x="78" data-y="8"  data-depth="2.6" data-parent="face" data-link="fiber">
             <a class="glass" href="#">project docs<small>gitbook</small></a>
@@ -61,8 +63,178 @@
         <div class="node leaf" id="homelab"  data-x="39" data-y="52" data-depth="4.0" data-parent="projects" data-link="dotted">
             <a class="glass" href="#">homelab<small>placeholder</small></a>
         </div>
+
+        <!-- Contact: shiny border -->
+        <div class="node"      id="contact"  data-x="56" data-y="51" data-depth="3.4" data-parent="face" data-link="copper">
+            <a class="glass shiny" href="#panel-contact" data-panel="contact" aria-haspopup="dialog">contact</a>
+        </div>
     </main>
 
+    <!-- ================= Zoom panels ================= -->
+    <div id="scrim"></div>
+
+    <!-- ABOUT: text types itself out. Edit the words here. -->
+    <section class="panel" id="panel-about" role="dialog" aria-modal="true" aria-labelledby="t-about" hidden>
+        <header class="panel-head">
+            <span class="panel-title" id="t-about">about me</span>
+            <button class="panel-x" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="panel-body">
+            <h2 class="tw tw-big">Hi, my name is Pabal Ahmed.</h2>
+            <p class="tw">I am a Bangladeshi American from New Jersey. Currently, I am a student in NJIT pursuing a Bachelor of Science in Information Technology specializing in Net/InfoSec.</p>
+            <p class="tw">Outside of school, I work as a Data Collection Associate with Meta (via Experis ManpowerGroup via contract). Some of my interests are SysAdmin/Engineering, DevOps, SRE.</p>
+            <p class="tw">If you would like to contact me, click away from this page and click the Contact button to shoot an email or check out my socials!</p>
+            <div class="chips after">
+                <span class="chip">NJIT</span>
+                <span class="chip">Network &amp; InfoSec</span>
+                <span class="chip">SysAdmin / Engineering</span>
+                <span class="chip">DevOps</span>
+                <span class="chip">SRE</span>
+            </div>
+            <p class="skip-hint" aria-hidden="true">click anywhere to skip the typing</p>
+        </div>
+    </section>
+
+    <!-- RESUME: no phone number on purpose. -->
+    <section class="panel" id="panel-resume" role="dialog" aria-modal="true" aria-labelledby="t-resume" hidden>
+        <header class="panel-head">
+            <span class="panel-title" id="t-resume">resume</span>
+            <button class="panel-x" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="panel-body">
+            <div class="stagger">
+                <div class="r-top">
+                    <h2>Pabal Ahmed</h2>
+                    <p class="r-sub">B.S. Information Technology, Network &amp; Information Security. NJIT.</p>
+                    <div class="r-links">
+                        <a class="pbtn" href="https://linkedin.com/in/pabal" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a class="pbtn" href="https://github.com/pabal95" target="_blank" rel="noopener noreferrer">GitHub</a>
+                        <!-- Export a copy WITHOUT your phone number to assets/resume.pdf, then delete the word "hidden" -->
+                        <a class="pbtn" id="resume-pdf" href="assets/resume.pdf" download hidden>Download PDF</a>
+                    </div>
+                </div>
+
+                <section class="r-sec">
+                    <h3>Education</h3>
+                    <article class="entry">
+                        <div class="when">May 2028</div>
+                        <div class="what">
+                            <h4>New Jersey Institute of Technology <span>Newark, NJ</span></h4>
+                            <p class="role">Bachelor of Science in Information Technology (Network and Information Security)</p>
+                            <ul><li>GPA: 3.36. Dean’s List since Fall 2024</li></ul>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="r-sec">
+                    <h3>Experience</h3>
+                    <article class="entry">
+                        <div class="when">July 2026 &ndash; Present</div>
+                        <div class="what">
+                            <h4>Data Collection Associate <span>Remote</span></h4>
+                            <p class="role">Meta Platforms, Inc. (Contract via Experis)</p>
+                            <ul>
+                                <li>Administered proprietary hardware and software environments for Meta’s Reality Labs, enforcing strict access-control protocols to secure confidential research data during live collection and transfer.</li>
+                                <li>Executed technical compliance workflows across highly variable hardware configurations, maintaining zero-defect documentation and audit logs for internal data security reviews.</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="entry">
+                        <div class="when">Sept. 2025 &ndash; Sep. 2026</div>
+                        <div class="what">
+                            <h4>Circulation Desk Assistant <span>Newark, NJ</span></h4>
+                            <p class="role">NJIT, Robert W. Van Houten Library</p>
+                            <ul>
+                                <li>Directed front-line circulation operations for a campus of 13,000+ students, executing high-volume physical asset transactions and performing tier-one patron account troubleshooting.</li>
+                                <li>Administered physical inventory databases and spatial scheduling utilizing Ex Libris Alma and LibCal, ensuring seamless academic resource confidentiality, integrity, availability and precise record-keeping.</li>
+                            </ul>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="r-sec">
+                    <h3>Projects</h3>
+                    <article class="entry">
+                        <div class="when">Sept. 2026 &ndash; Present</div>
+                        <div class="what">
+                            <h4>Enterprise Homelab &amp; Zero-Trust Network Architecture</h4>
+                            <ul>
+                                <li>Architected a bare-metal Proxmox VE hypervisor (ThinkCentre M910q) and segmented network traffic into isolated VLANs utilizing a TP-Link SG108E managed switch and a virtualized OPNsense firewall.</li>
+                                <li>Developed Infrastructure-as-Code (IaC) pipelines using Ansible and SSH keys to automate the deployment, patching, and configuration of headless Linux containers.</li>
+                                <li>Engineered secure, remote administrative access by deploying a Tailscale subnet router, bypassing the need for exposed inbound NAT ports while maintaining strict firewall drop rules.</li>
+                                <li>Configured a CI/CD edge network via Cloudflare Zero Trust and Pages, enabling automated TLS provisioning, DNS routing, and secure public exposure for internal services.</li>
+                                <li>Deploying a Wazuh SIEM to aggregate and analyze live network traffic and system logs, utilizing port mirroring to actively monitor for internal vulnerabilities.</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="entry">
+                        <div class="when">Dec. 2025 &ndash; Present</div>
+                        <div class="what">
+                            <h4>Minecraft Server Kit v1</h4>
+                            <ul>
+                                <li>Engineered a suite of Bash scripts to automate Linux-based server deployments, condensing 10+ manual configuration steps into a single interactive CLI prompt.</li>
+                                <li>Automated dependency verification (curl, jq, tmux) and API fetching to dynamically generate server environments without manual intervention.</li>
+                                <li>Implemented tmux session management to allow continuous live-console monitoring and headless detachment without interrupting active network connections.</li>
+                            </ul>
+                        </div>
+                    </article>
+                    <article class="entry">
+                        <div class="when">Jan. 2026 &ndash; May 2026</div>
+                        <div class="what">
+                            <h4>Full-stack Laptop Database System</h4>
+                            <ul>
+                                <li>Architected a full-stack inventory management system from scratch using a PHP/MySQL backend and an HTML/CSS/JS frontend, completely bypassing third-party CMS platforms.</li>
+                                <li>Engineered secure CRUD operations and rigid session-handling protocols, actively sanitizing database inputs to prevent SQL injection and maintain data integrity.</li>
+                            </ul>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="r-sec">
+                    <h3>Technical Skills</h3>
+                    <div class="skills">
+                        <h4>Systems &amp; Infrastructure</h4>
+                        <div class="chips">
+                            <span class="chip">Linux (Ubuntu Server, Fedora)</span><span class="chip">Docker</span><span class="chip">Proxmox VE</span><span class="chip">QEMU/KVM</span><span class="chip">VMware</span><span class="chip">Proxmox LXC</span><span class="chip">Ansible</span><span class="chip">Cloudflare (Pages CI/CD, Zero Trust, DNS)</span>
+                        </div>
+                        <h4>Languages</h4>
+                        <div class="chips">
+                            <span class="chip">PHP</span><span class="chip">MySQL</span><span class="chip">Bash</span><span class="chip">Python</span><span class="chip">Java</span><span class="chip">C# (Unity)</span><span class="chip">HTML/CSS/JS</span>
+                        </div>
+                        <h4>Tools &amp; Platforms</h4>
+                        <div class="chips">
+                            <span class="chip">Git/GitHub</span><span class="chip">Visual Studio Code</span><span class="chip">ALMA</span><span class="chip">LibCal</span><span class="chip">Adobe Creative Suite</span><span class="chip">Microsoft Office 365 (Excel, Word, Visio)</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT: email is built in JS (see panels.js) so bots can't just scrape it. -->
+    <section class="panel" id="panel-contact" role="dialog" aria-modal="true" aria-labelledby="t-contact" hidden>
+        <header class="panel-head">
+            <span class="panel-title" id="t-contact">contact</span>
+            <button class="panel-x" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="panel-body">
+            <div class="stagger c-wrap">
+                <h2>Get in touch</h2>
+                <p class="c-lead">Questions, ideas, or just want to say hi? Email is best.</p>
+                <p class="c-mail" id="mail-text" aria-live="polite"></p>
+                <div class="c-actions">
+                    <button class="pbtn shiny" id="mail-copy" type="button">copy email</button>
+                    <a class="pbtn" id="mail-send" href="#">open mail app</a>
+                </div>
+                <div class="c-socials">
+                    <a class="pbtn" href="https://linkedin.com/in/pabal" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a class="pbtn" href="https://github.com/pabal95" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <script src="app.js" defer></script>
+    <script src="panels.js" defer></script>
 </body>
 </html>

@@ -120,6 +120,8 @@
     function frame(t) {
         requestAnimationFrame(frame);
         if (mq.matches) return;
+        // a panel is open: freeze the scene, save power
+        if (document.documentElement.classList.contains('panel-open')) return;
 
         mx += (tx - mx) * EASE;
         my += (ty - my) * EASE;
